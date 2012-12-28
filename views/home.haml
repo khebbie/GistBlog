@@ -4,4 +4,6 @@
       Gist Blog	
     %p 
       - @gists.each do |gist|
-        %a{:href=>"/gist/#{gist.id}"} #{gist.filename}
+        %p
+          %a{:href=>"/gist/#{gist.id}"} #{gist.filename}
+          %br
