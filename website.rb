@@ -6,16 +6,30 @@ require 'json'
 
 class GistsAPI
   def gists_for_user()
-     uri = "https://api.github.com/users/khebbie/gists"
-     content = open(uri).read
-     parsed = JSON.parse(content)
-     
-     filename = ""
-     parsed["files"].each do |gistfile|
-       content = gistfile[1]["content"].to_s
-       filename =  gistfile[1]["filename"].to_s
-       filename = File.basename( filename, ".*" )
-     end
+    uri = "https://api.github.com/users/khebbie/gists"
+    content = open(uri).read
+    parsed = JSON.parse(content)
+
+    filename = ""
+    gists = Array.new
+
+    parsed.each do |gistJson|
+      id = gistJson["id"]
+      gistJson["files"].each do |gistfile|
+        content = gistfile[1]["content"].to_s
+        filename =  gistfile[1]["filename"].to_s
+        next if File.extname(filename) != ".md"
+
+        filename = File.basename( filename, ".*" )
+        gist = Gist.new
+        gist.filename = filename
+        gist.content = content
+        gist.id = id
+
+        gists << gist
+      end
+    end
+    gists
   end
 
   def gist(id)
@@ -23,7 +37,7 @@ class GistsAPI
     content = open(uri).read
     parsed = JSON.parse(content)
     filename = ""
-  
+
     parsed["files"].each do |gistfile|
       content = gistfile[1]["content"].to_s
       filename =  gistfile[1]["filename"].to_s
@@ -39,6 +53,8 @@ end
 class Gist
   attr_accessor :content
   attr_accessor :filename
+  attr_accessor :id
+
 end
 
 get '/gist/:id' do  
@@ -49,10 +65,10 @@ get '/gist/:id' do
 end
 
 get '/' do
-  uri = "https://api.github.com/users/khebbie/gists"
+  gistsAPI = GistsAPI.new()
+  @gists = gistsAPI.gists_for_user()
 
-  content = open(uri).read
-  parsed = JSON.parse(content)
+
   haml :home
 end
 
