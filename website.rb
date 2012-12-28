@@ -5,8 +5,8 @@ require 'open-uri'
 require 'json'
 
 class GistsAPI
-  def gists_for_user()
-    uri = "https://api.github.com/users/khebbie/gists"
+  def gists_for_user(username)
+    uri = "https://api.github.com/users/" + username +"/gists"
     content = open(uri).read
     parsed = JSON.parse(content)
 
@@ -66,7 +66,7 @@ end
 
 get '/' do
   gistsAPI = GistsAPI.new()
-  @gists = gistsAPI.gists_for_user()
+  @gists = gistsAPI.gists_for_user("khebbie")
 
 
   haml :home
