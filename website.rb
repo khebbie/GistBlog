@@ -15,4 +15,13 @@ get '/gist/:id' do
   end
   
   haml :index  , :locals => {:content => content}
-end 
+end
+
+get '/' do
+ haml :home
+  uri = "https://api.github.com/users/khebbie/gists"
+
+   content = open(uri).read
+  parsed = JSON.parse(content)
+
+end

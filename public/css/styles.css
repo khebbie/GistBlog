@@ -1,9 +1,32 @@
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
+  padding-left:40px
 }
 
 
 body {
   font-family:"Alegreya", Palatino, Georgia, serif;color:#444
+  background: url(/linedpaper.png) repeat 0 0;
 }
+
+h1, h2 { 
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family:"Alegreya SC", Palatino, Georgia, serif;color:#444
+ }
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover {
+    background-color: #FF9473;
+}
+
+.navbar-inner {
+  background-color: #444
+  background-image: none;
+  background-repeat: no-repeat;
+  filter: none;
+}
+
+ 
