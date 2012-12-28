@@ -1,7 +1,6 @@
-path = File.expand_path("../", __FILE__)
-
+$:.unshift File.expand_path("../", __FILE__)
 require 'rubygems'
 require 'sinatra'
-require "#{path}/website"
-
+require './website'
 run Sinatra::Application
+
