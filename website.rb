@@ -23,11 +23,9 @@ end
 get '/' do
   uri = "https://api.github.com/users/khebbie/gists"
 
-   content = open(uri).read
+  content = open(uri).read
   parsed = JSON.parse(content)
-   haml :home
-
-
+  haml :home
 end
 
 get '/about' do
