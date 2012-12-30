@@ -50,8 +50,7 @@ class GistsAPI
   end
 end
 
-class Gist < Struct.new(:content, :filename, :id)
-end
+Gist = Struct.new(:content, :filename, :id)
 
 get '/gist/:id' do  
   id = params[:id]
