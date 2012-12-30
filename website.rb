@@ -50,7 +50,7 @@ class GistsAPI
   end
 end
 
-class Gist << Struct.new(:content, :filename, :id)
+class Gist < Struct.new(:content, :filename, :id)
 end
 
 get '/gist/:id' do  
