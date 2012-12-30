@@ -10,25 +10,15 @@ class GistsAPI
     content = open(uri).read
     parsed = JSON.parse(content)
 
-    filename = ""
     gists = Array.new
 
     parsed.each do |gistJson|
       id = gistJson["id"]
-      gistJson["files"].each do |gistfile|
-        content = gistfile[1]["content"].to_s
-        filename =  gistfile[1]["filename"].to_s
-        next if File.extname(filename) != ".md"
-
-        filename = File.basename( filename, ".*" )
-        gist = Gist.new
-        gist.filename = filename
-        gist.content = content
+      gist = parse_gist(gistJson)
         gist.id = id
-
+        next if File.extname(gist.filename) != ".md"
         gists << gist
       end
-    end
     gists
   end
 
@@ -36,21 +26,28 @@ class GistsAPI
     uri = "https://api.github.com/gists/" + id
     content = open(uri).read
     parsed = JSON.parse(content)
-    filename = ""
-
-    parsed["files"].each do |gistfile|
+    
+    parse_gist(parsed)
+  end
+  def parse_gist(json)
+     filename = ""
+     content = ""
+     title = ""
+    json["files"].each do |gistfile|
       content = gistfile[1]["content"].to_s
       filename =  gistfile[1]["filename"].to_s
-      filename = File.basename( filename, ".*" )
+      title = File.basename( filename, ".*" )
     end
     gist = Gist.new
     gist.filename = filename
     gist.content = content
+    gist.title = title
     gist
+
   end
 end
 
-Gist = Struct.new(:content, :filename, :id)
+Gist = Struct.new(:content, :filename, :id, :title)
 
 get '/gist/:id' do  
   id = params[:id]
