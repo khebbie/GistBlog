@@ -4,11 +4,7 @@ require 'haml'
 require 'open-uri'
 require 'json'
 
-Gist = Struct.new(:content, :filename, :title, :id) do
-  def empty?()
-    false
-  end
-end
+Gist = Struct.new(:content, :filename, :title, :id)
 
 class GistsAPI
   def gists_for_user(username)
@@ -20,12 +16,9 @@ class GistsAPI
 
    parsed.each do |gistJson|
       id = gistJson["id"]
-      gist = parse_gist(gistJson, id)
-      p gist
-      next if gist.empty?
-      filename = gist.filename
-      next if File.extname(filename) != ".md"
-
+      gist = parse_gist(gistJson)
+      gist.id = id
+      next if File.extname(gist.filename) != ".md"
       gists << gist
     end
     gists
@@ -34,18 +27,17 @@ class GistsAPI
   def gist_by(id)
     uri = "https://api.github.com/gists/" + id
     content = open(uri).read
-    json = JSON.parse(content)
+    parsed = JSON.parse(content)
     
-    parse_gist(json)
+    parse_gist(parsed)
   end
-  def parse_gist(json, id = "0")
+  def parse_gist(json)
     json["files"].each do |gistfile|
 
       content = gistfile[1]["content"].to_s
       filename =  gistfile[1]["filename"].to_s
       title = File.basename( filename, ".*" )
-      
-      return Gist.new(content, filename, title, id)
+      return Gist.new(content, filename, title, "")
     end
   end
 end
@@ -54,7 +46,7 @@ get '/gist/:id' do
   id = params[:id]
   gistsAPI = GistsAPI.new()
   gist = gistsAPI.gist_by(id)
-  haml :index , :locals => {:content => gist.content, :title => gist.title} 
+  haml :index  , :locals => {:content => gist.content, :filename => gist.filename}
 end
 
 get '/' do
