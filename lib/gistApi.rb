@@ -21,7 +21,7 @@ class GistsAPI
     else
       io =  open(uri)
       content = io.read
-      if io.status == 200
+     if io.status == ["200", "OK"]
        redis[uri] = content
        redis.expire(id, 60*60)
       end
