@@ -1,5 +1,6 @@
 require 'rubygems'  
 require 'open-uri'
+require 'redis'
 
 Gist = Struct.new(:content, :filename, :title, :id) do
   def empty?()
@@ -9,12 +10,13 @@ end
 
 class GistsAPI
   def get_redis()
-    uri = URI.parse("redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/")
+    #uri = URI.parse("redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/")
+    uri = URI.parse("redis://localhost:6379/")
     Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
   end
   def get_url(uri)
     redis = get_redis()
-    if redis[url]
+    if redis[uri]
       content = redis[uri]
     else
       content = open(uri).read
