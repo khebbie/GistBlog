@@ -3,6 +3,7 @@ require 'sinatra'
 require 'haml'
 require 'json'
 require './lib/gistApi.rb'
+require './lib/gravatar.rb'
 
 get '/gist/:id' do  
   id = params[:id]
@@ -18,5 +19,6 @@ get '/' do
 end
 
 get '/about' do
+  @image_src = Gravatar.new().get_image_url("klaus@hebsgaard.dk")
   haml :about
 end
