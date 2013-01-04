@@ -8,9 +8,25 @@ Gist = Struct.new(:content, :filename, :title, :id) do
 end
 
 class GistsAPI
+  def get_redis()
+    uri = URI.parse("redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/")
+    Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  end
+  def get_url(uri)
+    redis = get_redis()
+    if redis[url]
+      content = redis[uri]
+    else
+      content = open(uri).read
+      redis[uri] = content
+      redis.expire(id, 3600*24*5)
+    end
+    content
+  end
   def gists_for_user(username)
     uri = "https://api.github.com/users/" + username +"/gists"
-    content = open(uri).read
+    content = get_url(uri) 
+
     parsed = JSON.parse(content)
 
     gists = Array.new
@@ -29,7 +45,7 @@ class GistsAPI
 
   def gist_by(id)
     uri = "https://api.github.com/gists/" + id
-    content = open(uri).read
+    content = get_url(uri) 
     json = JSON.parse(content)
     
     parse_gist(json)
