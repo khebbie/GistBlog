@@ -9,9 +9,13 @@ Gist = Struct.new(:content, :filename, :title, :id) do
 end
 
 class GistsAPI
+  def initialize(redisUrl)
+    @redisUrl = redisUrl
+  end
+
   def get_redis()
-    uri = URI.parse("redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/")
-    #uri = URI.parse("redis://localhost:6379/")
+    p @redisUrl
+    uri = URI.parse(@redisUrl)
     Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
   end
   def get_url(uri)
