@@ -1,6 +1,5 @@
 githubUsername: khebbie
 gravatarEmail: klaus@hebsgaard.dk
-development:
-  redisUrl: redis://localhost:6379/
-production:
-  redisUrl: redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/
+redisUrl:
+  development: redis://localhost:6379/
+  production: redis://redistogo:044be3cb6f2719b29e101ce8bd680ca7@spadefish.redistogo.com:9915/

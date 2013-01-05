@@ -10,10 +10,11 @@ end
 
 class GistsAPI
   def initialize(redisUrl)
-    @redisurl = redisUrl
+    @redisUrl = redisUrl
   end
 
   def get_redis()
+    p @redisUrl
     uri = URI.parse(@redisUrl)
     Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
   end
