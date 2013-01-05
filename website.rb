@@ -8,15 +8,19 @@ require './lib/gravatar.rb'
 
 config_file 'config.yml'
 
+def getGistApi()
+   GistsAPI.new(settings.redisUrl)
+end
+
 get '/gist/:id' do  
   id = params[:id]
-  gistsAPI = GistsAPI.new()
+  gistsAPI = getGistApi()
   gist = gistsAPI.gist_by(id)
   haml :index , :locals => {:content => gist.content, :title => gist.title} 
 end
 
 get '/' do
-  gistsAPI = GistsAPI.new()
+  gistsAPI = getGistApi()
   @gists = gistsAPI.gists_for_user(settings.githubUsername)
   haml :home
 end
