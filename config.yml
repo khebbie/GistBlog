@@ -1,4 +1,5 @@
 githubUsername: khebbie
+twitterUsername: khebbie
 gravatarEmail: klaus@hebsgaard.dk
 redisUrl:
   development: redis://localhost:6379/
