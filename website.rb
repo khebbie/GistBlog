@@ -4,12 +4,14 @@ require "sinatra/config_file"
 require 'haml'
 require 'json'
 require './lib/gistApi.rb'
+require './lib/gistCache.rb'
 require './lib/gravatar.rb'
 
 config_file 'config.yml'
 
 def getGistApi()
-   GistsAPI.new(settings.redisUrl)
+   decorated = GistsAPI.new()
+   GistCache.new(settings.redisUrl, decorated)
 end
 
 get '/gist/:id' do  
