@@ -3,6 +3,9 @@ require 'sinatra'
 require "sinatra/config_file"
 require 'haml'
 require 'json'
+require 'lib/gistApi.rb'
+require 'lib/gistCache.rb'
+require 'lib/gravatar.rb'
 
 config_file 'config.yml'
 
