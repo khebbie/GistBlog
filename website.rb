@@ -1,3 +1,6 @@
+$:.unshift File.dirname(__FILE__)
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
+
 require 'rubygems'  
 require 'sinatra'  
 require "sinatra/config_file"
