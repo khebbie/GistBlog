@@ -6,9 +6,9 @@ require 'sinatra'
 require "sinatra/config_file"
 require 'haml'
 require 'json'
-require 'lib/gistApi.rb'
-require 'lib/gistCache.rb'
-require 'lib/gravatar.rb'
+require 'gistApi.rb'
+require 'gistCache.rb'
+require 'gravatar.rb'
 
 config_file 'config.yml'
 
