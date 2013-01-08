@@ -1,14 +1,15 @@
-$:.unshift File.dirname(__FILE__)
-$:.unshift File.join(File.dirname(__FILE__), 'lib')
-
 require 'rubygems'  
 require 'sinatra'  
 require "sinatra/config_file"
 require 'haml'
 require 'json'
-require 'gistApi.rb'
-require 'gistCache.rb'
-require 'gravatar.rb'
+configure do
+  $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
+  Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| 
+    require File.basename(lib, '.*') 
+  }
+end
+
 
 config_file 'config.yml'
 
