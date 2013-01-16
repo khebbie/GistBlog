@@ -21,8 +21,8 @@ class GistCache
      else
        content = lookupNoCache.call(key)
         if !content.empty?
-         redis[key] = serialized_object = Marshal.dump(content)
-         redis.expire(key, 60*60)
+         serialized_object = Marshal.dump(content)
+         redis.setex(key, 60*60, serialized_object)
         end
       end
       content
