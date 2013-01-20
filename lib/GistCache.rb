@@ -14,6 +14,10 @@ class GistCache
 
   def method_missing(meth, *args)
      key = args[0]
+     get_value(key)
+  end
+
+  def get_value(key)
      redis = get_redis()
      if redis[key]
        serialized_object = redis[key]
@@ -28,6 +32,7 @@ class GistCache
       end
       content
   end
+
   def responds_to?(meth)
     @component.respond_to?(meth)
   end
