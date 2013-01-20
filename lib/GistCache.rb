@@ -4,7 +4,7 @@ require 'redis'
 class GistCache
    def initialize(redisUrl, gistApi)
      @redisUrl = redisUrl
-     @gistApi = gistApi
+     @component = gistApi
    end
 
   def get_redis()
@@ -12,14 +12,15 @@ class GistCache
     Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
   end
 
-  def get_cached_value(key, lookupNoCache)
+  def method_missing(meth, *args)
+     key = args[0]
      redis = get_redis()
      if redis[key]
        serialized_object = redis[key]
        content = Marshal.load(serialized_object)
        p content
      else
-       content = lookupNoCache.call(key)
+       content = @component.send(meth, *args)
         if !content.empty?
          serialized_object = Marshal.dump(content)
          redis.setex(key, 60*60, serialized_object)
@@ -27,12 +28,8 @@ class GistCache
       end
       content
   end
-
-  def gists_for_user(username)
-    get_cached_value(username, lambda {|key| @gistApi.gists_for_user(key)} )
+  def responds_to?(meth)
+    @component.respond_to?(meth)
   end
 
- def gist_by(id)
-   get_cached_value(id, lambda {|key| @gistApi.gist_by(key)} )
- end
 end
