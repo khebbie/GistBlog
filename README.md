@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/khebbie/GistBlog.png)](https://codeclimate.com/github/khebbie/GistBlog)
 Gist Blog
 =========
 
